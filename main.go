@@ -12,8 +12,8 @@ func main() {
 	var outputFileName string
 	var encoded string
 
-	flag.StringVar(&inputFileName, "inputfile", "", "")
-	flag.StringVar(&outputFileName, "outputfile", "", "")
+	flag.StringVar(&inputFileName, "i", "", "Input file of redis commands")
+	flag.StringVar(&outputFileName, "o", "", "Output file of redis protocol")
 	flag.Parse()
 
 	input, errIn := ioutil.ReadFile(inputFileName)
