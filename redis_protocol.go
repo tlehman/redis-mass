@@ -50,7 +50,7 @@ func parse(command string) []string {
 	var eol bool
 	var state parserState
 	state.parser = waitingArgStart
- 	state.args = []string{}
+	state.args = []string{}
 
 	for i, c := range command {
 		eol = (i == length-1)
@@ -60,7 +60,7 @@ func parse(command string) []string {
 }
 
 func Encode(text string) string {
-	var splitText []string = strings.Split(text, "\r\n")
+	var splitText []string = strings.Split(text, "\n")
 	var commands []string = splitText
 	var protocol bytes.Buffer
 

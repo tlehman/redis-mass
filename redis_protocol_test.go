@@ -27,5 +27,3 @@ func TestEncodeSingleCharUnquoted(t *testing.T) {
 		t.Fatal("Encode should handle one char unquoted args")
 	}
 }
-
-// sd
