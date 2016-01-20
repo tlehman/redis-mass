@@ -83,14 +83,8 @@ func EncodeStream(raw io.Reader, enc io.Writer) {
 func Encode(text string) string {
 	var raw io.Reader = strings.NewReader(text)
 	var buf bytes.Buffer
-	enc := bufio.NewWriter(&buf)
 
-	EncodeStream(raw, enc)
-
-	err := enc.Flush()
-	if err != nil {
-		fmt.Printf("error flushing encoded writer: %v", err)
-	}
+	EncodeStream(raw, &buf)
 
 	return buf.String()
 }
