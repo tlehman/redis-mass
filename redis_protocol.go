@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -59,25 +61,32 @@ func parse(command string) []string {
 	return state.args
 }
 
-func Encode(text string) string {
-	var splitText []string = strings.Split(text, "\n")
-	var commands []string = splitText
-	var protocol bytes.Buffer
-
+func EncodeStream(raw io.Reader, enc io.Writer) {
 	var args []string
 	var length int
 
-	for _, command := range commands {
-		args = parse(strings.TrimSpace(command))
+	scanner := bufio.NewScanner(raw)
+
+	for scanner.Scan() {
+		command := strings.TrimSpace(scanner.Text())
+		args = parse(command)
 		length = len(args)
 		if length > 0 {
-			protocol.WriteString(fmt.Sprintf("*%d\r\n", length))
+			enc.Write([]byte(fmt.Sprintf("*%d\r\n", length)))
 			for _, arg := range args {
-				encoded := fmt.Sprintf("$%d\r\n%s\r\n", len(arg), arg)
-				protocol.WriteString(encoded)
+				encoded := []byte(fmt.Sprintf("$%d\r\n%s\r\n", len(arg), arg))
+				enc.Write(encoded)
 			}
 		}
 	}
+}
 
-	return protocol.String()
+func Encode(text string) string {
+	var raw io.Reader = strings.NewReader(text)
+	var buf bytes.Buffer
+	var enc io.Writer = bufio.NewWriter(&buf)
+
+	EncodeStream(raw, enc)
+
+	return buf.String()
 }
