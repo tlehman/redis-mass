@@ -72,10 +72,9 @@ func EncodeStream(raw io.Reader, enc io.Writer) {
 		args = parse(command)
 		length = len(args)
 		if length > 0 {
-			enc.Write([]byte(fmt.Sprintf("*%d\r\n", length)))
+			io.WriteString(enc, fmt.Sprintf("*%d\r\n", length))
 			for _, arg := range args {
-				encoded := []byte(fmt.Sprintf("$%d\r\n%s\r\n", len(arg), arg))
-				enc.Write(encoded)
+				io.WriteString(enc, fmt.Sprintf("$%d\r\n%s\r\n", len(arg), arg))
 			}
 		}
 	}
@@ -84,9 +83,14 @@ func EncodeStream(raw io.Reader, enc io.Writer) {
 func Encode(text string) string {
 	var raw io.Reader = strings.NewReader(text)
 	var buf bytes.Buffer
-	var enc io.Writer = bufio.NewWriter(&buf)
+	enc := bufio.NewWriter(&buf)
 
 	EncodeStream(raw, enc)
+
+	err := enc.Flush()
+	if err != nil {
+		fmt.Printf("error flushing encoded writer: %v", err)
+	}
 
 	return buf.String()
 }

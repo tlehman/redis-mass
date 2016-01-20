@@ -13,6 +13,7 @@ func main() {
 	flag.Parse()
 
 	file, err := os.Open(inputFileName)
+	defer file.Close()
 	if err == nil {
 		EncodeStream(file, os.Stdout)
 	} else {
