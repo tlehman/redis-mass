@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+const BUFSIZE = 16384
+
 func main() {
 	var inputFileName string
 	var outputFileName string
@@ -28,7 +30,7 @@ func main() {
 		} else {
 			outputWriter = os.Stdout
 		}
-		bufwriter := bufio.NewWriterSize(outputWriter, 4294967296)
+		bufwriter := bufio.NewWriterSize(outputWriter, BUFSIZE)
 		EncodeStream(inputFile, bufwriter)
 		bufwriter.Flush()
 	} else {

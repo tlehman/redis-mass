@@ -80,6 +80,7 @@ func EncodeStream(raw io.Reader, enc io.Writer) {
 	}
 }
 
+
 func Encode(text string) string {
 	var raw io.Reader = strings.NewReader(text)
 	var buf bytes.Buffer
