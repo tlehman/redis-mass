@@ -26,19 +26,19 @@ $ go get github.com/tlehman/redis-mass
 ### Mass insertion on Redis
 
 ```
-$ redis-mass /path/to/input-file | redis-cli --pipe
+$ redis-mass -i /path/to/input-file | redis-cli --pipe
 ```
 
 ### Output to console
 
 ```
-$ redis-mass /path/to/input-file
+$ redis-mass -i /path/to/input-file
 ```
 
 ### Output to file
 
 ```
-$ redis-mass /path/to/input-file /path/to/output-file
+$ redis-mass -i /path/to/input-file /path/to/output-file
 ```
 
 ## Running tests
